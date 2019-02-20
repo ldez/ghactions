@@ -1,6 +1,6 @@
 # GHActions
 
-[![release](https://img.shields.io/github/release/ldez/ghactions.svg?style=flat)](https://github.com/ldez/ghactions/releases)
+[![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/ldez/ghactions.svg?label=release)](https://github.com/ldez/ghactions/releases)
 [![Build Status](https://travis-ci.org/ldez/ghactions.svg?branch=master)](https://travis-ci.org/ldez/ghactions)
 [![godoc](https://godoc.org/github.com/ldez/ghactions?status.svg)](https://godoc.org/github.com/ldez/ghactions)
 
