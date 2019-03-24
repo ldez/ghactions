@@ -4,6 +4,8 @@
 [![Build Status](https://travis-ci.org/ldez/ghactions.svg?branch=master)](https://travis-ci.org/ldez/ghactions)
 [![godoc](https://godoc.org/github.com/ldez/ghactions?status.svg)](https://godoc.org/github.com/ldez/ghactions)
 
+[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/ldez)
+
 Create a Github Action in 5 seconds!
 
 - Environment variables: https://godoc.org/github.com/ldez/ghactions#pkg-constants
