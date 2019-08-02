@@ -9,7 +9,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/google/go-github/v24/github"
+	"github.com/google/go-github/v27/github"
 	"github.com/ldez/ghactions/event"
 	"golang.org/x/oauth2"
 )
