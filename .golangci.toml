@@ -28,6 +28,7 @@
     "gas",
     "dupl",
     "prealloc",
+    "wsl",
   ]
 
 [issues]
@@ -35,6 +36,10 @@
   max-per-linter = 0
   max-same-issues = 0
   exclude = []
+
   [[issues.exclude-rules]]
     path = "actions.go"
-    text = "cyclomatic complexity (\\d+) of func `\\(\\*Action\\)\\.Run` is high"
+    text = "(cyclomatic|cognitive) complexity (\\d+) of func `\\(\\*Action\\)\\.Run` is high"
+  [[issues.exclude-rules]]
+    path = "actions.go"
+    text = "Function 'Run' has too many statements"
