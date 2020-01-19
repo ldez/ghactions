@@ -1,6 +1,8 @@
 module github.com/ldez/ghactions
 
+go 1.13
+
 require (
-	github.com/google/go-github/v27 v27.0.4
-	golang.org/x/oauth2 v0.0.0-20190212230446-3e8b2be13635
+	github.com/google/go-github/v29 v29.0.2
+	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
 )
