@@ -20,7 +20,7 @@ import (
 	"context"
 	"log"
 
-	"github.com/google/go-github/v24/github"
+	"github.com/google/go-github/v29/github"
 	"github.com/ldez/ghactions"
 	"github.com/ldez/ghactions/event"
 )
@@ -50,7 +50,6 @@ func main() {
 
 ## References
 
-- https://developer.github.com/actions/creating-github-actions/accessing-the-runtime-environment/
-- https://developer.github.com/actions/creating-github-actions/creating-a-docker-container/
+- https://help.github.com/en/actions
 - https://github.com/marketplace/actions
 - https://github-actions.explore-tech.org
