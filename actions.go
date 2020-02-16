@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/google/go-github/v29/github"
@@ -16,20 +17,25 @@ import (
 
 // GitHub Action environment variables.
 const (
-	GithubToken      = "GITHUB_TOKEN"
-	Hostname         = "HOSTNAME"
 	Home             = "HOME"
-	GithubEventPath  = "GITHUB_EVENT_PATH"
-	GithubWorkflow   = "GITHUB_WORKFLOW"
+	Hostname         = "HOSTNAME"
+	PWD              = "PWD"
 	Path             = "PATH"
 	GithubAction     = "GITHUB_ACTION"
+	GithubActions    = "GITHUB_ACTIONS"
+	GithubActor      = "GITHUB_ACTOR"
+	GithubToken      = "GITHUB_TOKEN"
+	GithubWorkflow   = "GITHUB_WORKFLOW"
+	GithubRunID      = "GITHUB_RUN_ID"
+	GithubRunNumber  = "GITHUB_RUN_NUMBER"
 	GithubRepository = "GITHUB_REPOSITORY"
+	GithubEventName  = "GITHUB_EVENT_NAME"
+	GithubEventPath  = "GITHUB_EVENT_PATH"
 	GithubWorkspace  = "GITHUB_WORKSPACE"
 	GithubSha        = "GITHUB_SHA"
-	GithubActor      = "GITHUB_ACTOR"
 	GithubRef        = "GITHUB_REF"
-	PWD              = "PWD"
-	GithubEventName  = "GITHUB_EVENT_NAME"
+	GithubHeadRef    = "GITHUB_HEAD_REF"
+	GithubBaseRef    = "GITHUB_BASE_REF"
 )
 
 // Action GitHub Action executor.
@@ -37,6 +43,8 @@ type Action struct {
 	client                         *github.Client
 	SkipWhenNoHandler              bool
 	SkipWhenTypeUnknown            bool
+	onCheckRun                     func(*github.Client, *github.CheckRunEvent) error
+	onCheckSuite                   func(*github.Client, *github.CheckSuiteEvent) error
 	onCommitComment                func(*github.Client, *github.CommitCommentEvent) error
 	onCreate                       func(*github.Client, *github.CreateEvent) error
 	onDelete                       func(*github.Client, *github.DeleteEvent) error
@@ -78,6 +86,28 @@ func (a *Action) Run() error {
 	eventPath := os.Getenv(GithubEventPath)
 
 	switch eventName {
+	case event.CheckRun:
+		if a.onCheckRun != nil {
+			evt := &github.CheckRunEvent{}
+			err := readEvent(eventPath, evt)
+			if err != nil {
+				return err
+			}
+
+			return a.onCheckRun(a.client, evt)
+		}
+
+	case event.CheckSuite:
+		if a.onCheckSuite != nil {
+			evt := &github.CheckSuiteEvent{}
+			err := readEvent(eventPath, evt)
+			if err != nil {
+				return err
+			}
+
+			return a.onCheckSuite(a.client, evt)
+		}
+
 	case event.CommitComment:
 		if a.onCommitComment != nil {
 			evt := &github.CommitCommentEvent{}
@@ -369,6 +399,18 @@ func (a *Action) Run() error {
 	return fmt.Errorf("no handler for the received event type %q", eventName)
 }
 
+// OnCheckRun CheckRun handler.
+func (a *Action) OnCheckRun(eventHandler func(*github.Client, *github.CheckRunEvent) error) *Action {
+	a.onCheckRun = eventHandler
+	return a
+}
+
+// OnCheckSuite CheckSuite handler.
+func (a *Action) OnCheckSuite(eventHandler func(*github.Client, *github.CheckSuiteEvent) error) *Action {
+	a.onCheckSuite = eventHandler
+	return a
+}
+
 // OnCommitComment CommitComment handler.
 func (a *Action) OnCommitComment(eventHandler func(*github.Client, *github.CommitCommentEvent) error) *Action {
 	a.onCommitComment = eventHandler
@@ -534,7 +576,7 @@ func newGitHubClient(ctx context.Context, token string) *github.Client {
 }
 
 func readEvent(eventPath string, event interface{}) error {
-	content, err := ioutil.ReadFile(eventPath)
+	content, err := ioutil.ReadFile(filepath.Clean(eventPath))
 	if err != nil {
 		return err
 	}

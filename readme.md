@@ -53,3 +53,5 @@ func main() {
 - https://help.github.com/en/actions
 - https://github.com/marketplace/actions
 - https://github-actions.explore-tech.org
+- https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables
+- https://help.github.com/en/actions/reference/events-that-trigger-workflows
