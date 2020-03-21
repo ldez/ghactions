@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/google/go-github/v29/github"
+	"github.com/google/go-github/v30/github"
 	"github.com/ldez/ghactions/event"
 	"golang.org/x/oauth2"
 )
