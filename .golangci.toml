@@ -28,6 +28,8 @@
     "dupl",
     "prealloc",
     "wsl",
+    "goerr113",
+    "testpackage",
   ]
 
 [issues]
