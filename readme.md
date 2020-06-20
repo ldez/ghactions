@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.com/ldez/ghactions.svg?branch=master)](https://travis-ci.com/ldez/ghactions)
 [![godoc](https://godoc.org/github.com/ldez/ghactions?status.svg)](https://godoc.org/github.com/ldez/ghactions)
 
-[![Say Thanks!](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/ldez)
+[![Sponsor](https://img.shields.io/badge/Sponsor%20me-%E2%9D%A4%EF%B8%8F-pink)](https://github.com/sponsors/ldez)
 
 Create a Github Action in 5 seconds!
 
