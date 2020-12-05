@@ -28,9 +28,13 @@
     "dupl",
     "prealloc",
     "wsl",
-    "goerr113",
-    "testpackage",
     "nlreturn",
+    "goerr113",
+    "wrapcheck",
+    "testpackage",
+    "paralleltest",
+    "tparallel",
+    "exhaustivestruct",
   ]
 
 [issues]

@@ -1,8 +1,8 @@
 # GHActions
 
 [![GitHub tag (latest SemVer)](https://img.shields.io/github/tag/ldez/ghactions.svg?label=release)](https://github.com/ldez/ghactions/releases)
-[![Build Status](https://travis-ci.com/ldez/ghactions.svg?branch=master)](https://travis-ci.com/ldez/ghactions)
-[![godoc](https://godoc.org/github.com/ldez/ghactions?status.svg)](https://godoc.org/github.com/ldez/ghactions)
+[![Build Status](https://github.com/ldez/ghactions/workflows/Main/badge.svg?branch=master)](https://github.com/ldez/ghactions/actions)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/ldez/ghactions)](https://pkg.go.dev/github.com/ldez/ghactions)
 
 [![Sponsor](https://img.shields.io/badge/Sponsor%20me-%E2%9D%A4%EF%B8%8F-pink)](https://github.com/sponsors/ldez)
 

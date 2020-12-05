@@ -1,7 +1,5 @@
 .PHONY: clean fmt check test
 
-GOFILES := $(shell git ls-files '*.go' | grep -v '^vendor/')
-
 default: clean check test
 
 clean:
@@ -12,6 +10,3 @@ test: clean
 
 check:
 	GO111MODULE=on golangci-lint run
-
-fmt:
-	gofmt -s -l -w $(GOFILES)
