@@ -8,8 +8,8 @@
 
 Create a Github Action in 5 seconds!
 
-- Environment variables: https://godoc.org/github.com/ldez/ghactions#pkg-constants
-- Supported events: https://godoc.org/github.com/ldez/ghactions/event#pkg-constants
+- Environment variables: https://pkg.go.dev/github.com/ldez/ghactions#pkg-constants
+- Supported events: https://pkg.go.dev/github.com/ldez/ghactions/event#pkg-constants
 
 ## Examples
 
