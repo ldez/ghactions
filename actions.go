@@ -563,7 +563,7 @@ func (a *Action) OnWatch(eventHandler func(*github.Client, *github.WatchEvent) e
 
 func newGitHubClient(ctx context.Context, token string) *github.Client {
 	var client *github.Client
-	if len(token) == 0 {
+	if token == "" {
 		client = github.NewClient(nil)
 	} else {
 		ts := oauth2.StaticTokenSource(
@@ -575,17 +575,17 @@ func newGitHubClient(ctx context.Context, token string) *github.Client {
 	return client
 }
 
-func readEvent(eventPath string, event interface{}) error {
+func readEvent(eventPath string, evnt interface{}) error {
 	content, err := ioutil.ReadFile(filepath.Clean(eventPath))
 	if err != nil {
 		return err
 	}
 
-	return json.Unmarshal(content, event)
+	return json.Unmarshal(content, evnt)
 }
 
 // GetRepoInfo Split "GITHUB_REPOSITORY" to [owner, repoName].
-func GetRepoInfo() (owner string, repoName string) {
+func GetRepoInfo() (owner, repoName string) {
 	githubRepository := os.Getenv(GithubRepository)
 
 	parts := strings.SplitN(githubRepository, "/", 2)
