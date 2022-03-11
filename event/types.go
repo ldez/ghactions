@@ -23,6 +23,7 @@ const (
 	ProjectColumn                = "project_column"
 	Public                       = "public"
 	PullRequest                  = "pull_request"
+	PullRequestTarget            = "pull_request_target"
 	PullRequestReviewComment     = "pull_request_review_comment"
 	PullRequestReview            = "pull_request_review"
 	Push                         = "push"
