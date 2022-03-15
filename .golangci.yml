@@ -70,6 +70,7 @@ linters:
     - prealloc
     - ifshort
     - forcetypeassert
+    - varnamelen
 
 issues:
   exclude-use-default: false
@@ -79,5 +80,7 @@ issues:
   exclude-rules:
     - path: actions.go
       text: "(cyclomatic|cognitive) complexity (\\d+) of func `\\(\\*Action\\)\\.Run` is high"
+    - path: actions.go
+      text: "Function name: Run, Cyclomatic Complexity: "
     - path: actions.go
       text: Function 'Run' has too many statements
