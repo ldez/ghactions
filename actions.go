@@ -63,6 +63,7 @@ type Action struct {
 	onProject                      func(*github.Client, *github.ProjectEvent) error
 	onPublic                       func(*github.Client, *github.PublicEvent) error
 	onPullRequest                  func(*github.Client, *github.PullRequestEvent) error
+	onPullRequestTarget            func(*github.Client, *github.PullRequestTargetEvent) error
 	onPullRequestReview            func(*github.Client, *github.PullRequestReviewEvent) error
 	onPullRequestReviewComment     func(*github.Client, *github.PullRequestReviewCommentEvent) error
 	onPush                         func(*github.Client, *github.PushEvent) error
@@ -306,6 +307,17 @@ func (a *Action) Run() error {
 			return a.onPullRequest(a.client, evt)
 		}
 
+	case event.PullRequestTarget:
+		if a.onPullRequestTarget != nil {
+			evt := &github.PullRequestTargetEvent{}
+			err := readEvent(eventPath, evt)
+			if err != nil {
+				return err
+			}
+
+			return a.onPullRequestTarget(a.client, evt)
+		}
+
 	case event.PullRequestReview:
 		if a.onPullRequestReview != nil {
 			evt := &github.PullRequestReviewEvent{}
@@ -516,6 +528,12 @@ func (a *Action) OnPublic(eventHandler func(*github.Client, *github.PublicEvent)
 // OnPullRequest PullRequest handler.
 func (a *Action) OnPullRequest(eventHandler func(*github.Client, *github.PullRequestEvent) error) *Action {
 	a.onPullRequest = eventHandler
+	return a
+}
+
+// OnPullRequestTarget PullRequestTarget handler.
+func (a *Action) OnPullRequestTarget(eventHandler func(*github.Client, *github.PullRequestTargetEvent) error) *Action {
+	a.onPullRequestTarget = eventHandler
 	return a
 }
 
