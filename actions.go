@@ -5,12 +5,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/google/go-github/v37/github"
+	"github.com/google/go-github/v43/github"
 	"github.com/ldez/ghactions/event"
 	"golang.org/x/oauth2"
 )
@@ -594,7 +593,7 @@ func newGitHubClient(ctx context.Context, token string) *github.Client {
 }
 
 func readEvent(eventPath string, evnt interface{}) error {
-	content, err := ioutil.ReadFile(filepath.Clean(eventPath))
+	content, err := os.ReadFile(filepath.Clean(eventPath))
 	if err != nil {
 		return err
 	}
