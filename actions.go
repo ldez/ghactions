@@ -3,14 +3,12 @@ package ghactions
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/google/go-github/v43/github"
-	"github.com/ldez/ghactions/event"
+	"github.com/google/go-github/v44/github"
 	"golang.org/x/oauth2"
 )
 
@@ -85,315 +83,157 @@ func (a *Action) Run() error {
 	eventName := os.Getenv(GithubEventName)
 	eventPath := os.Getenv(GithubEventPath)
 
-	switch eventName {
-	case event.CheckRun:
-		if a.onCheckRun != nil {
-			evt := &github.CheckRunEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
+	content, err := os.ReadFile(filepath.Clean(eventPath))
+	if err != nil {
+		return err
+	}
 
+	rawEvent, err := github.ParseWebHook(eventName, content)
+	if err != nil {
+		return err
+	}
+
+	switch evt := rawEvent.(type) {
+	case *github.CheckRunEvent:
+		if a.onCheckRun != nil {
 			return a.onCheckRun(a.client, evt)
 		}
 
-	case event.CheckSuite:
+	case *github.CheckSuiteEvent:
 		if a.onCheckSuite != nil {
-			evt := &github.CheckSuiteEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onCheckSuite(a.client, evt)
 		}
 
-	case event.CommitComment:
+	case *github.CommitCommentEvent:
 		if a.onCommitComment != nil {
-			evt := &github.CommitCommentEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onCommitComment(a.client, evt)
 		}
 
-	case event.Create:
+	case *github.CreateEvent:
 		if a.onCreate != nil {
-			evt := &github.CreateEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onCreate(a.client, evt)
 		}
 
-	case event.Delete:
+	case *github.DeleteEvent:
 		if a.onDelete != nil {
-			evt := &github.DeleteEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onDelete(a.client, evt)
 		}
 
-	case event.Deployment:
+	case *github.DeploymentEvent:
 		if a.onDeployment != nil {
-			evt := &github.DeploymentEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onDeployment(a.client, evt)
 		}
 
-	case event.DeploymentStatus:
+	case *github.DeploymentStatusEvent:
 		if a.onDeploymentStatus != nil {
-			evt := &github.DeploymentStatusEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onDeploymentStatus(a.client, evt)
 		}
 
-	case event.Fork:
+	case *github.ForkEvent:
 		if a.onFork != nil {
-			evt := &github.ForkEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onFork(a.client, evt)
 		}
 
-	case event.Gollum:
+	case *github.GollumEvent:
 		if a.onGollum != nil {
-			evt := &github.GollumEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onGollum(a.client, evt)
 		}
 
-	case event.IssueComment:
+	case *github.IssueCommentEvent:
 		if a.onIssueComment != nil {
-			evt := &github.IssueCommentEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onIssueComment(a.client, evt)
 		}
 
-	case event.Issues:
+	case *github.IssuesEvent:
 		if a.onIssues != nil {
-			evt := &github.IssuesEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onIssues(a.client, evt)
 		}
 
-	case event.Label:
+	case *github.LabelEvent:
 		if a.onLabel != nil {
-			evt := &github.LabelEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onLabel(a.client, evt)
 		}
 
-	case event.Member:
+	case *github.MemberEvent:
 		if a.onMember != nil {
-			evt := &github.MemberEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onMember(a.client, evt)
 		}
 
-	case event.Milestone:
+	case *github.MilestoneEvent:
 		if a.onMilestone != nil {
-			evt := &github.MilestoneEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onMilestone(a.client, evt)
 		}
 
-	case event.PageBuild:
+	case *github.PageBuildEvent:
 		if a.onPageBuild != nil {
-			evt := &github.PageBuildEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onPageBuild(a.client, evt)
 		}
 
-	case event.ProjectCard:
+	case *github.ProjectCardEvent:
 		if a.onProjectCard != nil {
-			evt := &github.ProjectCardEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onProjectCard(a.client, evt)
 		}
 
-	case event.ProjectColumn:
+	case *github.ProjectColumnEvent:
 		if a.onProjectColumn != nil {
-			evt := &github.ProjectColumnEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onProjectColumn(a.client, evt)
 		}
 
-	case event.Project:
+	case *github.ProjectEvent:
 		if a.onProject != nil {
-			evt := &github.ProjectEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onProject(a.client, evt)
 		}
 
-	case event.Public:
+	case *github.PublicEvent:
 		if a.onPublic != nil {
-			evt := &github.PublicEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onPublic(a.client, evt)
 		}
 
-	case event.PullRequest:
+	case *github.PullRequestEvent:
 		if a.onPullRequest != nil {
-			evt := &github.PullRequestEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onPullRequest(a.client, evt)
 		}
 
-	case event.PullRequestTarget:
+	case *github.PullRequestTargetEvent:
 		if a.onPullRequestTarget != nil {
-			evt := &github.PullRequestTargetEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onPullRequestTarget(a.client, evt)
 		}
 
-	case event.PullRequestReview:
+	case *github.PullRequestReviewEvent:
 		if a.onPullRequestReview != nil {
-			evt := &github.PullRequestReviewEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onPullRequestReview(a.client, evt)
 		}
 
-	case event.PullRequestReviewComment:
+	case *github.PullRequestReviewCommentEvent:
 		if a.onPullRequestReviewComment != nil {
-			evt := &github.PullRequestReviewCommentEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onPullRequestReviewComment(a.client, evt)
 		}
 
-	case event.Push:
+	case *github.PushEvent:
 		if a.onPush != nil {
-			evt := &github.PushEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onPush(a.client, evt)
 		}
 
-	case event.Release:
+	case *github.ReleaseEvent:
 		if a.onRelease != nil {
-			evt := &github.ReleaseEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onRelease(a.client, evt)
 		}
 
-	case event.RepositoryVulnerabilityAlert:
+	case *github.RepositoryVulnerabilityAlertEvent:
 		if a.onRepositoryVulnerabilityAlert != nil {
-			evt := &github.RepositoryVulnerabilityAlertEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onRepositoryVulnerabilityAlert(a.client, evt)
 		}
 
-	case event.RepositoryDispatch:
+	case *github.RepositoryDispatchEvent:
 		// noop
 
-	case event.Status:
+	case *github.StatusEvent:
 		if a.onStatus != nil {
-			evt := &github.StatusEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onStatus(a.client, evt)
 		}
 
-	case event.Watch:
+	case *github.WatchEvent:
 		if a.onWatch != nil {
-			evt := &github.WatchEvent{}
-			err := readEvent(eventPath, evt)
-			if err != nil {
-				return err
-			}
-
 			return a.onWatch(a.client, evt)
 		}
 
@@ -407,6 +247,7 @@ func (a *Action) Run() error {
 	if a.SkipWhenNoHandler {
 		return nil
 	}
+
 	return fmt.Errorf("no handler for the received event type %q", eventName)
 }
 
@@ -590,15 +431,6 @@ func newGitHubClient(ctx context.Context, token string) *github.Client {
 		client = github.NewClient(tc)
 	}
 	return client
-}
-
-func readEvent(eventPath string, evnt interface{}) error {
-	content, err := os.ReadFile(filepath.Clean(eventPath))
-	if err != nil {
-		return err
-	}
-
-	return json.Unmarshal(content, evnt)
 }
 
 // GetRepoInfo Split "GITHUB_REPOSITORY" to [owner, repoName].

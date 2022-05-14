@@ -4,12 +4,11 @@ import (
 	"context"
 	"testing"
 
-	"github.com/google/go-github/v43/github"
-	"github.com/ldez/ghactions/event"
+	"github.com/google/go-github/v44/github"
 )
 
 func TestAction(t *testing.T) {
-	t.Setenv(GithubEventName, event.Issues)
+	t.Setenv(GithubEventName, "issues")
 	t.Setenv(GithubEventPath, "./fixtures/issues.json")
 
 	ctx := context.Background()
