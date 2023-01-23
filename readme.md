@@ -6,7 +6,7 @@
 
 [![Sponsor](https://img.shields.io/badge/Sponsor%20me-%E2%9D%A4%EF%B8%8F-pink)](https://github.com/sponsors/ldez)
 
-Create a Github Action in 5 seconds!
+Create a GitHub Action in 5 seconds!
 
 - Environment variables: https://pkg.go.dev/github.com/ldez/ghactions#pkg-constants
 - Supported events: https://pkg.go.dev/github.com/ldez/ghactions/event#pkg-constants
@@ -20,7 +20,7 @@ import (
 	"context"
 	"log"
 
-	"github.com/google/go-github/v44/github"
+	"github.com/google/go-github/v49/github"
 	"github.com/ldez/ghactions"
 	"github.com/ldez/ghactions/event"
 )
