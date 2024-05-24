@@ -1,7 +1,5 @@
 run:
   timeout: 5m
-  skip-files: [ ]
-  skip-dirs: [ ]
 
 linters-settings:
   govet:
@@ -10,8 +8,6 @@ linters-settings:
       - fieldalignment
   gocyclo:
     min-complexity: 15
-  maligned:
-    suggest-new: true
   goconst:
     min-len: 5
     min-occurrences: 3
@@ -50,26 +46,17 @@ linters-settings:
 linters:
   enable-all: true
   disable:
-    - deadcode # deprecated
-    - exhaustivestruct # deprecated
-    - golint # deprecated
-    - ifshort # deprecated
-    - interfacer # deprecated
-    - maligned # deprecated
-    - nosnakecase # deprecated
-    - scopelint # deprecated
-    - structcheck # deprecated
-    - varcheck # deprecated
+    - execinquery # deprecated
+    - gomnd # deprecated
+    - cyclop # duplicate of gocyclo
     - sqlclosecheck # not relevant (SQL)
     - rowserrcheck # not relevant (SQL)
-    - execinquery # not relevant (SQL)
-    - cyclop # duplicate of gocyclo
     - lll
     - dupl
     - wsl
     - nlreturn
-    - gomnd
-    - goerr113
+    - mnd
+    - err113
     - wrapcheck
     - exhaustive
     - exhaustruct
@@ -84,7 +71,7 @@ linters:
 
 issues:
   exclude-use-default: false
-  max-per-linter: 0
+  max-issues-per-linter: 0
   max-same-issues: 0
   exclude: ["G101"]
   exclude-rules:

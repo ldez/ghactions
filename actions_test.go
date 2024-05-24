@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/google/go-github/v58/github"
+	"github.com/google/go-github/v62/github"
 )
 
 func TestAction(t *testing.T) {
@@ -17,10 +17,10 @@ func TestAction(t *testing.T) {
 	action.SkipWhenTypeUnknown = false
 
 	err := action.
-		OnPullRequest(func(client *github.Client, requestEvent *github.PullRequestEvent) error {
+		OnPullRequest(func(_ *github.Client, _ *github.PullRequestEvent) error {
 			return nil
 		}).
-		OnIssues(func(client *github.Client, issuesEvent *github.IssuesEvent) error {
+		OnIssues(func(_ *github.Client, _ *github.IssuesEvent) error {
 			return nil
 		}).
 		Run()
