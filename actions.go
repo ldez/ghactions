@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/google/go-github/v62/github"
+	"github.com/google/go-github/v68/github"
 	"golang.org/x/oauth2"
 )
 
@@ -37,27 +37,74 @@ const (
 
 // Action GitHub Action executor.
 type Action struct {
-	client                         *github.Client
-	SkipWhenNoHandler              bool
-	SkipWhenTypeUnknown            bool
-	onCheckRun                     func(*github.Client, *github.CheckRunEvent) error
-	onCheckSuite                   func(*github.Client, *github.CheckSuiteEvent) error
-	onCommitComment                func(*github.Client, *github.CommitCommentEvent) error
-	onCreate                       func(*github.Client, *github.CreateEvent) error
-	onDelete                       func(*github.Client, *github.DeleteEvent) error
-	onDeployment                   func(*github.Client, *github.DeploymentEvent) error
-	onDeploymentStatus             func(*github.Client, *github.DeploymentStatusEvent) error
-	onFork                         func(*github.Client, *github.ForkEvent) error
-	onGollum                       func(*github.Client, *github.GollumEvent) error
-	onIssueComment                 func(*github.Client, *github.IssueCommentEvent) error
-	onIssues                       func(*github.Client, *github.IssuesEvent) error
-	onLabel                        func(*github.Client, *github.LabelEvent) error
-	onMember                       func(*github.Client, *github.MemberEvent) error
-	onMilestone                    func(*github.Client, *github.MilestoneEvent) error
-	onPageBuild                    func(*github.Client, *github.PageBuildEvent) error
-	onProjectCard                  func(*github.Client, *github.ProjectCardEvent) error
-	onProjectColumn                func(*github.Client, *github.ProjectColumnEvent) error
-	onProject                      func(*github.Client, *github.ProjectEvent) error
+	client              *github.Client
+	SkipWhenNoHandler   bool
+	SkipWhenTypeUnknown bool
+	onCheckRun          func(*github.Client, *github.CheckRunEvent) error
+	onCheckSuite        func(*github.Client, *github.CheckSuiteEvent) error
+	onCommitComment     func(*github.Client, *github.CommitCommentEvent) error
+	onCreate            func(*github.Client, *github.CreateEvent) error
+	onDelete            func(*github.Client, *github.DeleteEvent) error
+	onDeployment        func(*github.Client, *github.DeploymentEvent) error
+	onDeploymentStatus  func(*github.Client, *github.DeploymentStatusEvent) error
+	onFork              func(*github.Client, *github.ForkEvent) error
+	onGollum            func(*github.Client, *github.GollumEvent) error
+	onIssueComment      func(*github.Client, *github.IssueCommentEvent) error
+	onIssues            func(*github.Client, *github.IssuesEvent) error
+	onLabel             func(*github.Client, *github.LabelEvent) error
+	onMember            func(*github.Client, *github.MemberEvent) error
+	onMilestone         func(*github.Client, *github.MilestoneEvent) error
+	onPageBuild         func(*github.Client, *github.PageBuildEvent) error
+
+	onProjectItem func(*github.Client, *github.ProjectV2ItemEvent) error
+	onProject     func(*github.Client, *github.ProjectV2Event) error
+
+	// ---
+
+	onBranchProtectionRule          func(*github.Client, *github.BranchProtectionRuleEvent) error
+	onBranchProtectionConfiguration func(*github.Client, *github.BranchProtectionConfigurationEvent) error
+	onContentReference              func(*github.Client, *github.ContentReferenceEvent) error
+	onCustomProperty                func(*github.Client, *github.CustomPropertyEvent) error
+	onCustomPropertyValues          func(*github.Client, *github.CustomPropertyValuesEvent) error
+	onDependabotAlert               func(*github.Client, *github.DependabotAlertEvent) error
+	onDeployKey                     func(*github.Client, *github.DeployKeyEvent) error
+	onDeploymentProtectionRule      func(*github.Client, *github.DeploymentProtectionRuleEvent) error
+	onDeploymentReview              func(*github.Client, *github.DeploymentReviewEvent) error
+	onDiscussionComment             func(*github.Client, *github.DiscussionCommentEvent) error
+	onDiscussion                    func(*github.Client, *github.DiscussionEvent) error
+	onGitHubAppAuthorization        func(*github.Client, *github.GitHubAppAuthorizationEvent) error
+	onInstallation                  func(*github.Client, *github.InstallationEvent) error
+	onInstallationRepositories      func(*github.Client, *github.InstallationRepositoriesEvent) error
+	onInstallationTarget            func(*github.Client, *github.InstallationTargetEvent) error
+	onMarketplacePurchase           func(*github.Client, *github.MarketplacePurchaseEvent) error
+	onMembership                    func(*github.Client, *github.MembershipEvent) error
+	onMergeGroup                    func(*github.Client, *github.MergeGroupEvent) error
+	onMeta                          func(*github.Client, *github.MetaEvent) error
+	onOrganization                  func(*github.Client, *github.OrganizationEvent) error
+	onOrgBlock                      func(*github.Client, *github.OrgBlockEvent) error
+	onPackage                       func(*github.Client, *github.PackageEvent) error
+	onPersonalAccessTokenRequest    func(*github.Client, *github.PersonalAccessTokenRequestEvent) error
+	onPing                          func(*github.Client, *github.PingEvent) error
+	onRepository                    func(*github.Client, *github.RepositoryEvent) error
+	onRepositoryDispatch            func(*github.Client, *github.RepositoryDispatchEvent) error
+	onRepositoryImport              func(*github.Client, *github.RepositoryImportEvent) error
+	onRepositoryRuleset             func(*github.Client, *github.RepositoryRulesetEvent) error
+	onSecretScanningAlert           func(*github.Client, *github.SecretScanningAlertEvent) error
+	onSecretScanningAlertLocation   func(*github.Client, *github.SecretScanningAlertLocationEvent) error
+	onSecurityAndAnalysis           func(*github.Client, *github.SecurityAndAnalysisEvent) error
+	onStar                          func(*github.Client, *github.StarEvent) error
+	onTeam                          func(*github.Client, *github.TeamEvent) error
+	onTeamAdd                       func(*github.Client, *github.TeamAddEvent) error
+	onUser                          func(*github.Client, *github.UserEvent) error
+	onWorkflowDispatch              func(*github.Client, *github.WorkflowDispatchEvent) error
+	onWorkflowJob                   func(*github.Client, *github.WorkflowJobEvent) error
+	onWorkflowRun                   func(*github.Client, *github.WorkflowRunEvent) error
+	onSecurityAdvisory              func(*github.Client, *github.SecurityAdvisoryEvent) error
+	onCodeScanningAlert             func(*github.Client, *github.CodeScanningAlertEvent) error
+	onSponsorship                   func(*github.Client, *github.SponsorshipEvent) error
+
+	// ---
+
 	onPublic                       func(*github.Client, *github.PublicEvent) error
 	onPullRequest                  func(*github.Client, *github.PullRequestEvent) error
 	onPullRequestTarget            func(*github.Client, *github.PullRequestTargetEvent) error
@@ -169,17 +216,12 @@ func (a *Action) Run() error {
 			return a.onPageBuild(a.client, evt)
 		}
 
-	case *github.ProjectCardEvent:
-		if a.onProjectCard != nil {
-			return a.onProjectCard(a.client, evt)
+	case *github.ProjectV2ItemEvent:
+		if a.onProjectItem != nil {
+			return a.onProjectItem(a.client, evt)
 		}
 
-	case *github.ProjectColumnEvent:
-		if a.onProjectColumn != nil {
-			return a.onProjectColumn(a.client, evt)
-		}
-
-	case *github.ProjectEvent:
+	case *github.ProjectV2Event:
 		if a.onProject != nil {
 			return a.onProject(a.client, evt)
 		}
@@ -235,6 +277,206 @@ func (a *Action) Run() error {
 	case *github.WatchEvent:
 		if a.onWatch != nil {
 			return a.onWatch(a.client, evt)
+		}
+
+	case *github.BranchProtectionRuleEvent:
+		if a.onBranchProtectionRule != nil {
+			return a.onBranchProtectionRule(a.client, evt)
+		}
+
+	case *github.BranchProtectionConfigurationEvent:
+		if a.onBranchProtectionConfiguration != nil {
+			return a.onBranchProtectionConfiguration(a.client, evt)
+		}
+
+	case *github.ContentReferenceEvent:
+		if a.onContentReference != nil {
+			return a.onContentReference(a.client, evt)
+		}
+
+	case *github.CustomPropertyEvent:
+		if a.onCustomProperty != nil {
+			return a.onCustomProperty(a.client, evt)
+		}
+
+	case *github.CustomPropertyValuesEvent:
+		if a.onCustomPropertyValues != nil {
+			return a.onCustomPropertyValues(a.client, evt)
+		}
+
+	case *github.DependabotAlertEvent:
+		if a.onDependabotAlert != nil {
+			return a.onDependabotAlert(a.client, evt)
+		}
+
+	case *github.DeployKeyEvent:
+		if a.onDeployKey != nil {
+			return a.onDeployKey(a.client, evt)
+		}
+
+	case *github.DeploymentProtectionRuleEvent:
+		if a.onDeploymentProtectionRule != nil {
+			return a.onDeploymentProtectionRule(a.client, evt)
+		}
+
+	case *github.DeploymentReviewEvent:
+		if a.onDeploymentReview != nil {
+			return a.onDeploymentReview(a.client, evt)
+		}
+
+	case *github.DiscussionCommentEvent:
+		if a.onDiscussionComment != nil {
+			return a.onDiscussionComment(a.client, evt)
+		}
+
+	case *github.DiscussionEvent:
+		if a.onDiscussion != nil {
+			return a.onDiscussion(a.client, evt)
+		}
+
+	case *github.GitHubAppAuthorizationEvent:
+		if a.onGitHubAppAuthorization != nil {
+			return a.onGitHubAppAuthorization(a.client, evt)
+		}
+
+	case *github.InstallationEvent:
+		if a.onInstallation != nil {
+			return a.onInstallation(a.client, evt)
+		}
+
+	case *github.InstallationRepositoriesEvent:
+		if a.onInstallationRepositories != nil {
+			return a.onInstallationRepositories(a.client, evt)
+		}
+
+	case *github.InstallationTargetEvent:
+		if a.onInstallationTarget != nil {
+			return a.onInstallationTarget(a.client, evt)
+		}
+
+	case *github.MarketplacePurchaseEvent:
+		if a.onMarketplacePurchase != nil {
+			return a.onMarketplacePurchase(a.client, evt)
+		}
+
+	case *github.MembershipEvent:
+		if a.onMembership != nil {
+			return a.onMembership(a.client, evt)
+		}
+
+	case *github.MergeGroupEvent:
+		if a.onMergeGroup != nil {
+			return a.onMergeGroup(a.client, evt)
+		}
+
+	case *github.MetaEvent:
+		if a.onMeta != nil {
+			return a.onMeta(a.client, evt)
+		}
+
+	case *github.OrganizationEvent:
+		if a.onOrganization != nil {
+			return a.onOrganization(a.client, evt)
+		}
+
+	case *github.OrgBlockEvent:
+		if a.onOrgBlock != nil {
+			return a.onOrgBlock(a.client, evt)
+		}
+
+	case *github.PackageEvent:
+		if a.onPackage != nil {
+			return a.onPackage(a.client, evt)
+		}
+
+	case *github.PersonalAccessTokenRequestEvent:
+		if a.onPersonalAccessTokenRequest != nil {
+			return a.onPersonalAccessTokenRequest(a.client, evt)
+		}
+
+	case *github.PingEvent:
+		if a.onPing != nil {
+			return a.onPing(a.client, evt)
+		}
+
+	case *github.RepositoryEvent:
+		if a.onRepository != nil {
+			return a.onRepository(a.client, evt)
+		}
+
+	case *github.RepositoryImportEvent:
+		if a.onRepositoryImport != nil {
+			return a.onRepositoryImport(a.client, evt)
+		}
+
+	case *github.RepositoryRulesetEvent:
+		if a.onRepositoryRuleset != nil {
+			return a.onRepositoryRuleset(a.client, evt)
+		}
+
+	case *github.SecretScanningAlertEvent:
+		if a.onSecretScanningAlert != nil {
+			return a.onSecretScanningAlert(a.client, evt)
+		}
+
+	case *github.SecretScanningAlertLocationEvent:
+		if a.onSecretScanningAlertLocation != nil {
+			return a.onSecretScanningAlertLocation(a.client, evt)
+		}
+
+	case *github.SecurityAndAnalysisEvent:
+		if a.onSecurityAndAnalysis != nil {
+			return a.onSecurityAndAnalysis(a.client, evt)
+		}
+
+	case *github.StarEvent:
+		if a.onStar != nil {
+			return a.onStar(a.client, evt)
+		}
+
+	case *github.TeamEvent:
+		if a.onTeam != nil {
+			return a.onTeam(a.client, evt)
+		}
+
+	case *github.TeamAddEvent:
+		if a.onTeamAdd != nil {
+			return a.onTeamAdd(a.client, evt)
+		}
+
+	case *github.UserEvent:
+		if a.onUser != nil {
+			return a.onUser(a.client, evt)
+		}
+
+	case *github.WorkflowDispatchEvent:
+		if a.onWorkflowDispatch != nil {
+			return a.onWorkflowDispatch(a.client, evt)
+		}
+
+	case *github.WorkflowJobEvent:
+		if a.onWorkflowJob != nil {
+			return a.onWorkflowJob(a.client, evt)
+		}
+
+	case *github.WorkflowRunEvent:
+		if a.onWorkflowRun != nil {
+			return a.onWorkflowRun(a.client, evt)
+		}
+
+	case *github.SecurityAdvisoryEvent:
+		if a.onSecurityAdvisory != nil {
+			return a.onSecurityAdvisory(a.client, evt)
+		}
+
+	case *github.CodeScanningAlertEvent:
+		if a.onCodeScanningAlert != nil {
+			return a.onCodeScanningAlert(a.client, evt)
+		}
+
+	case *github.SponsorshipEvent:
+		if a.onSponsorship != nil {
+			return a.onSponsorship(a.client, evt)
 		}
 
 	default:
@@ -341,20 +583,14 @@ func (a *Action) OnPageBuild(eventHandler func(*github.Client, *github.PageBuild
 	return a
 }
 
-// OnProjectCard ProjectCard handler.
-func (a *Action) OnProjectCard(eventHandler func(*github.Client, *github.ProjectCardEvent) error) *Action {
-	a.onProjectCard = eventHandler
-	return a
-}
-
-// OnProjectColumn ProjectColumn handler.
-func (a *Action) OnProjectColumn(eventHandler func(*github.Client, *github.ProjectColumnEvent) error) *Action {
-	a.onProjectColumn = eventHandler
+// OnProjectItem ProjectItem handler.
+func (a *Action) OnProjectItem(eventHandler func(*github.Client, *github.ProjectV2ItemEvent) error) *Action {
+	a.onProjectItem = eventHandler
 	return a
 }
 
 // OnProject Project handler.
-func (a *Action) OnProject(eventHandler func(*github.Client, *github.ProjectEvent) error) *Action {
+func (a *Action) OnProject(eventHandler func(*github.Client, *github.ProjectV2Event) error) *Action {
 	a.onProject = eventHandler
 	return a
 }
@@ -416,6 +652,252 @@ func (a *Action) OnStatus(eventHandler func(*github.Client, *github.StatusEvent)
 // OnWatch Watch handler.
 func (a *Action) OnWatch(eventHandler func(*github.Client, *github.WatchEvent) error) *Action {
 	a.onWatch = eventHandler
+	return a
+}
+
+// OnBranchProtectionRule BranchProtectionRule handler.
+func (a *Action) OnBranchProtectionRule(eventHandler func(*github.Client, *github.BranchProtectionRuleEvent) error) *Action {
+	a.onBranchProtectionRule = eventHandler
+	return a
+}
+
+// OnBranchProtectionConfiguration BranchProtectionConfiguration handler.
+func (a *Action) OnBranchProtectionConfiguration(eventHandler func(*github.Client, *github.BranchProtectionConfigurationEvent) error) *Action {
+	a.onBranchProtectionConfiguration = eventHandler
+	return a
+}
+
+// OnContentReference ContentReference handler.
+func (a *Action) OnContentReference(eventHandler func(*github.Client, *github.ContentReferenceEvent) error) *Action {
+	a.onContentReference = eventHandler
+	return a
+}
+
+// OnCustomProperty CustomProperty handler.
+func (a *Action) OnCustomProperty(eventHandler func(*github.Client, *github.CustomPropertyEvent) error) *Action {
+	a.onCustomProperty = eventHandler
+	return a
+}
+
+// OnCustomPropertyValues CustomPropertyValues handler.
+func (a *Action) OnCustomPropertyValues(eventHandler func(*github.Client, *github.CustomPropertyValuesEvent) error) *Action {
+	a.onCustomPropertyValues = eventHandler
+	return a
+}
+
+// OnDependabotAlert DependabotAlert handler.
+func (a *Action) OnDependabotAlert(eventHandler func(*github.Client, *github.DependabotAlertEvent) error) *Action {
+	a.onDependabotAlert = eventHandler
+	return a
+}
+
+// OnDeployKey DeployKey handler.
+func (a *Action) OnDeployKey(eventHandler func(*github.Client, *github.DeployKeyEvent) error) *Action {
+	a.onDeployKey = eventHandler
+	return a
+}
+
+// OnDeploymentProtectionRule DeploymentProtectionRule handler.
+func (a *Action) OnDeploymentProtectionRule(eventHandler func(*github.Client, *github.DeploymentProtectionRuleEvent) error) *Action {
+	a.onDeploymentProtectionRule = eventHandler
+	return a
+}
+
+// OnDeploymentReview DeploymentReview handler.
+func (a *Action) OnDeploymentReview(eventHandler func(*github.Client, *github.DeploymentReviewEvent) error) *Action {
+	a.onDeploymentReview = eventHandler
+	return a
+}
+
+// OnDiscussionComment DiscussionComment handler.
+func (a *Action) OnDiscussionComment(eventHandler func(*github.Client, *github.DiscussionCommentEvent) error) *Action {
+	a.onDiscussionComment = eventHandler
+	return a
+}
+
+// OnDiscussion Discussion handler.
+func (a *Action) OnDiscussion(eventHandler func(*github.Client, *github.DiscussionEvent) error) *Action {
+	a.onDiscussion = eventHandler
+	return a
+}
+
+// OnGitHubAppAuthorization GitHubAppAuthorization handler.
+func (a *Action) OnGitHubAppAuthorization(eventHandler func(*github.Client, *github.GitHubAppAuthorizationEvent) error) *Action {
+	a.onGitHubAppAuthorization = eventHandler
+	return a
+}
+
+// OnInstallation Installation handler.
+func (a *Action) OnInstallation(eventHandler func(*github.Client, *github.InstallationEvent) error) *Action {
+	a.onInstallation = eventHandler
+	return a
+}
+
+// OnInstallationRepositories InstallationRepositories handler.
+func (a *Action) OnInstallationRepositories(eventHandler func(*github.Client, *github.InstallationRepositoriesEvent) error) *Action {
+	a.onInstallationRepositories = eventHandler
+	return a
+}
+
+// OnInstallationTarget InstallationTarget handler.
+func (a *Action) OnInstallationTarget(eventHandler func(*github.Client, *github.InstallationTargetEvent) error) *Action {
+	a.onInstallationTarget = eventHandler
+	return a
+}
+
+// OnMarketplacePurchase MarketplacePurchase handler.
+func (a *Action) OnMarketplacePurchase(eventHandler func(*github.Client, *github.MarketplacePurchaseEvent) error) *Action {
+	a.onMarketplacePurchase = eventHandler
+	return a
+}
+
+// OnMembership Membership handler.
+func (a *Action) OnMembership(eventHandler func(*github.Client, *github.MembershipEvent) error) *Action {
+	a.onMembership = eventHandler
+	return a
+}
+
+// OnMergeGroup MergeGroup handler.
+func (a *Action) OnMergeGroup(eventHandler func(*github.Client, *github.MergeGroupEvent) error) *Action {
+	a.onMergeGroup = eventHandler
+	return a
+}
+
+// OnMeta Meta handler.
+func (a *Action) OnMeta(eventHandler func(*github.Client, *github.MetaEvent) error) *Action {
+	a.onMeta = eventHandler
+	return a
+}
+
+// OnOrganization Organization handler.
+func (a *Action) OnOrganization(eventHandler func(*github.Client, *github.OrganizationEvent) error) *Action {
+	a.onOrganization = eventHandler
+	return a
+}
+
+// OnOrgBlock OrgBlock handler.
+func (a *Action) OnOrgBlock(eventHandler func(*github.Client, *github.OrgBlockEvent) error) *Action {
+	a.onOrgBlock = eventHandler
+	return a
+}
+
+// OnPackage Package handler.
+func (a *Action) OnPackage(eventHandler func(*github.Client, *github.PackageEvent) error) *Action {
+	a.onPackage = eventHandler
+	return a
+}
+
+// OnPersonalAccessTokenRequest PersonalAccessTokenRequest handler.
+func (a *Action) OnPersonalAccessTokenRequest(eventHandler func(*github.Client, *github.PersonalAccessTokenRequestEvent) error) *Action {
+	a.onPersonalAccessTokenRequest = eventHandler
+	return a
+}
+
+// OnPing Ping handler.
+func (a *Action) OnPing(eventHandler func(*github.Client, *github.PingEvent) error) *Action {
+	a.onPing = eventHandler
+	return a
+}
+
+// OnRepository Repository handler.
+func (a *Action) OnRepository(eventHandler func(*github.Client, *github.RepositoryEvent) error) *Action {
+	a.onRepository = eventHandler
+	return a
+}
+
+// OnRepositoryDispatch RepositoryDispatch handler.
+func (a *Action) OnRepositoryDispatch(eventHandler func(*github.Client, *github.RepositoryDispatchEvent) error) *Action {
+	a.onRepositoryDispatch = eventHandler
+	return a
+}
+
+// OnRepositoryImport RepositoryImport handler.
+func (a *Action) OnRepositoryImport(eventHandler func(*github.Client, *github.RepositoryImportEvent) error) *Action {
+	a.onRepositoryImport = eventHandler
+	return a
+}
+
+// OnRepositoryRuleset RepositoryRuleset handler.
+func (a *Action) OnRepositoryRuleset(eventHandler func(*github.Client, *github.RepositoryRulesetEvent) error) *Action {
+	a.onRepositoryRuleset = eventHandler
+	return a
+}
+
+// OnSecretScanningAlert SecretScanningAlert handler.
+func (a *Action) OnSecretScanningAlert(eventHandler func(*github.Client, *github.SecretScanningAlertEvent) error) *Action {
+	a.onSecretScanningAlert = eventHandler
+	return a
+}
+
+// OnSecretScanningAlertLocation SecretScanningAlertLocation handler.
+func (a *Action) OnSecretScanningAlertLocation(eventHandler func(*github.Client, *github.SecretScanningAlertLocationEvent) error) *Action {
+	a.onSecretScanningAlertLocation = eventHandler
+	return a
+}
+
+// OnSecurityAndAnalysis SecurityAndAnalysis handler.
+func (a *Action) OnSecurityAndAnalysis(eventHandler func(*github.Client, *github.SecurityAndAnalysisEvent) error) *Action {
+	a.onSecurityAndAnalysis = eventHandler
+	return a
+}
+
+// OnStar Star handler.
+func (a *Action) OnStar(eventHandler func(*github.Client, *github.StarEvent) error) *Action {
+	a.onStar = eventHandler
+	return a
+}
+
+// OnTeam Team handler.
+func (a *Action) OnTeam(eventHandler func(*github.Client, *github.TeamEvent) error) *Action {
+	a.onTeam = eventHandler
+	return a
+}
+
+// OnTeamAdd Team Add handler.
+func (a *Action) OnTeamAdd(eventHandler func(*github.Client, *github.TeamAddEvent) error) *Action {
+	a.onTeamAdd = eventHandler
+	return a
+}
+
+// OnUser User handler.
+func (a *Action) OnUser(eventHandler func(*github.Client, *github.UserEvent) error) *Action {
+	a.onUser = eventHandler
+	return a
+}
+
+// OnWorkflowDispatch Workflow Dispatch handler.
+func (a *Action) OnWorkflowDispatch(eventHandler func(*github.Client, *github.WorkflowDispatchEvent) error) *Action {
+	a.onWorkflowDispatch = eventHandler
+	return a
+}
+
+// OnWorkflowJob Workflow Job handler.
+func (a *Action) OnWorkflowJob(eventHandler func(*github.Client, *github.WorkflowJobEvent) error) *Action {
+	a.onWorkflowJob = eventHandler
+	return a
+}
+
+// OnWorkflowRun Workflow Run handler.
+func (a *Action) OnWorkflowRun(eventHandler func(*github.Client, *github.WorkflowRunEvent) error) *Action {
+	a.onWorkflowRun = eventHandler
+	return a
+}
+
+// OnSecurityAdvisory Security Advisory handler.
+func (a *Action) OnSecurityAdvisory(eventHandler func(*github.Client, *github.SecurityAdvisoryEvent) error) *Action {
+	a.onSecurityAdvisory = eventHandler
+	return a
+}
+
+// OnCodeScanningAlert CodeScanning Alert handler.
+func (a *Action) OnCodeScanningAlert(eventHandler func(*github.Client, *github.CodeScanningAlertEvent) error) *Action {
+	a.onCodeScanningAlert = eventHandler
+	return a
+}
+
+// OnSponsorship Sponsorship handler.
+func (a *Action) OnSponsorship(eventHandler func(*github.Client, *github.SponsorshipEvent) error) *Action {
+	a.onSponsorship = eventHandler
 	return a
 }
 
