@@ -1,5 +1,26 @@
-run:
-  timeout: 5m
+linters:
+  enable-all: true
+  disable:
+    - exportloopref # deprecated
+    - cyclop # duplicate of gocyclo
+    - sqlclosecheck # not relevant (SQL)
+    - rowserrcheck # not relevant (SQL)
+    - lll
+    - dupl
+    - wsl
+    - nlreturn
+    - mnd
+    - err113
+    - wrapcheck
+    - exhaustive
+    - exhaustruct
+    - testpackage
+    - tparallel
+    - paralleltest
+    - prealloc
+    - forcetypeassert
+    - varnamelen
+    - nonamedreturns
 
 linters-settings:
   govet:
@@ -43,32 +64,6 @@ linters-settings:
       hugeParam:
         sizeThreshold: 100
 
-linters:
-  enable-all: true
-  disable:
-    - execinquery # deprecated
-    - gomnd # deprecated
-    - cyclop # duplicate of gocyclo
-    - sqlclosecheck # not relevant (SQL)
-    - rowserrcheck # not relevant (SQL)
-    - lll
-    - dupl
-    - wsl
-    - nlreturn
-    - mnd
-    - err113
-    - wrapcheck
-    - exhaustive
-    - exhaustruct
-    - testpackage
-    - tparallel
-    - paralleltest
-    - prealloc
-    - ifshort
-    - forcetypeassert
-    - varnamelen
-    - nonamedreturns
-
 issues:
   exclude-use-default: false
   max-issues-per-linter: 0
@@ -81,3 +76,6 @@ issues:
       text: "Function name: Run, Cyclomatic Complexity: "
     - path: actions.go
       text: Function 'Run' has too many statements
+
+run:
+  timeout: 5m
