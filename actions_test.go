@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/google/go-github/v71/github"
+	"github.com/google/go-github/v85/github"
 )
 
 func TestAction(t *testing.T) {

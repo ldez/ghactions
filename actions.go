@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/google/go-github/v71/github"
+	"github.com/google/go-github/v85/github"
 	"golang.org/x/oauth2"
 )
 
@@ -483,6 +483,7 @@ func (a *Action) Run() error {
 		if a.SkipWhenTypeUnknown {
 			return nil
 		}
+
 		return fmt.Errorf("unsupported event type: %q", eventName)
 	}
 
@@ -902,17 +903,15 @@ func (a *Action) OnSponsorship(eventHandler func(*github.Client, *github.Sponsor
 }
 
 func newGitHubClient(ctx context.Context, token string) *github.Client {
-	var client *github.Client
 	if token == "" {
-		client = github.NewClient(nil)
-	} else {
-		ts := oauth2.StaticTokenSource(
-			&oauth2.Token{AccessToken: token},
-		)
-		tc := oauth2.NewClient(ctx, ts)
-		client = github.NewClient(tc)
+		return github.NewClient(nil)
 	}
-	return client
+
+	tc := oauth2.NewClient(ctx, oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: token},
+	))
+
+	return github.NewClient(tc)
 }
 
 // GetRepoInfo Split "GITHUB_REPOSITORY" to [owner, repoName].
