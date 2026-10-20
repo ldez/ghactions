@@ -6,7 +6,9 @@ formatters:
     - gofumpt
   settings:
     gofumpt:
-      extra-rules: true
+      extra:
+        group-params: true
+        clothe-returns: false
 
 linters:
   default: all
@@ -15,6 +17,7 @@ linters:
     - dupl
     - err113
     - exhaustive
+    - exhaustruct_v5
     - exhaustruct
     - forcetypeassert
     - lll
@@ -29,7 +32,8 @@ linters:
     - tparallel
     - varnamelen
     - wrapcheck
-    - wsl
+    - wsl # deprecated
+    - gomodguard # deprecated
 
   settings:
     depguard:
@@ -73,6 +77,7 @@ linters:
     gosec:
       excludes:
         - G101
+        - G703
 
   exclusions:
     rules:

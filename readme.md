@@ -20,18 +20,24 @@ import (
 	"context"
 	"log"
 
-	"github.com/google/go-github/v49/github"
+	"github.com/google/go-github/v93/github"
 	"github.com/ldez/ghactions"
 	"github.com/ldez/ghactions/event"
 )
 
 func main() {
 	ctx := context.Background()
-	action := ghactions.NewAction(ctx)
+	
+	action, err := ghactions.NewAction(ctx)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	
 	// action.SkipWhenNoHandler = true
 	// action.SkipWhenTypeUnknown = true
 
-	err := action.
+	err = action.
 		OnPullRequest(func(client *github.Client, requestEvent *github.PullRequestEvent) error {
 			// TODO add your code.
 			return nil
@@ -55,3 +61,4 @@ func main() {
 - https://github-actions.explore-tech.org
 - https://help.github.com/en/actions/configuring-and-managing-workflows/using-environment-variables
 - https://help.github.com/en/actions/reference/events-that-trigger-workflows
+- https://docs.github.com/en/actions/reference/workflows-and-actions/variables
